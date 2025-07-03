@@ -23,11 +23,10 @@
 Install the following tools (if not already):
 
 ```bash
-sudo apt install jq curl -y
+sudo apt install jq curl dig -y
 go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
 go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest
 go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
-sudo apt install curl dig
 ```
 
 ---
