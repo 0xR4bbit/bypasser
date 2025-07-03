@@ -23,8 +23,8 @@ cat << "EOF"
 ██████╔╝   ██║   ██║     ██║  ██║███████║███████║███████╗██║  ██║
 ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
 EOF
-echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit${NC}"
-echo -e "${MAGENTA}                  Enhanced with AI-Powered Fixes${NC}\n"
+echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit by 0xAbhi${NC}"
+echo -e "${MAGENTA}                  
 
 # Check if running as root
 if [[ $EUID -eq 0 ]]; then
