@@ -57,7 +57,14 @@ done
 
 # Step 6: crt.sh passive enum
 echo -e "${CYAN}[*] Checking crt.sh for additional subdomains...${NC}"
-curl -s "https://crt.sh/?q=%25.$domain&output=json" | jq -r '.[].name_value' | sort -u > crt.txt
+crt_resp=$(curl -s -A "Mozilla/5.0" "https://crt.sh/?q=%25.$domain&output=json")
+
+if echo "$crt_resp" | jq empty 2>/dev/null; then
+    echo "$crt_resp" | jq -r '.[].name_value' | sort -u > crt.txt
+else
+    echo -e "${RED}[!] crt.sh returned invalid JSON. Skipping...${NC}"
+    echo "" > crt.txt
+fi
 
 # Step 7: Resolving crt.sh subdomains
 echo -e "${CYAN}[*] Resolving crt.sh subdomains...${NC}"
