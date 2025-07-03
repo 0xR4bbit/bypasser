@@ -79,12 +79,24 @@ sort -u real_ips.txt -o real_ips.txt
 # Step 9: Reverse IP Lookup (Hackertarget API)
 echo -e "${CYAN}[*] Running reverse IP lookup on filtered IPs...${NC}"
 > reverse_lookup.txt
-for ip in $(cut -d ' ' -f2 real_ips.txt | sort -u); do
-    echo -e "[>] $ip" >> reverse_lookup.txt
-    curl -s "https://api.hackertarget.com/reverseiplookup/?q=$ip" >> reverse_lookup.txt
-    echo -e "\n---\n" >> reverse_lookup.txt
-    sleep 2
-done
+
+if [ -s real_ips.txt ]; then
+    while read ip; do
+        if [[ -n "$ip" ]]; then
+            echo "[>] [$ip]" >> reverse_lookup.txt
+            resp=$(curl -s "https://api.hackertarget.com/reverseiplookup/?q=$ip")
+            if echo "$resp" | grep -q "No records found" || echo "$resp" | grep -q "error"; then
+                echo "No domains found." >> reverse_lookup.txt
+            else
+                echo "$resp" >> reverse_lookup.txt
+            fi
+            echo -e "\n---\n" >> reverse_lookup.txt
+        fi
+    done < real_ips.txt
+else
+    echo "[!] No real IPs found. Skipping reverse lookup." >> reverse_lookup.txt
+fi
+
 
 # Done
 echo -e "${GREEN}[+] Done. Check the following files for output:${NC}"
