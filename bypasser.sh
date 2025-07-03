@@ -142,7 +142,8 @@ else
         "echo -e '\\n[#] Trying {}'; {}" >> "$output_dir/axfr_results.txt" 2>&1
     
     if grep -q "Transfer failed" "$output_dir/axfr_results.txt"; then
-        echo -e "  ${YELLOW}[!] Zone transfer blocked (normal for secured DNS)${NC}"
+        # FIXED LINE: Use single quotes and escape parentheses
+        echo -e "  ${YELLOW}[!] Zone transfer blocked \(normal for secured DNS\)${NC}"
     else
         axfr_success=$(grep -c "XFR size" "$output_dir/axfr_results.txt")
         if [ "$axfr_success" -gt 0 ]; then
