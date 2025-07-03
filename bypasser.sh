@@ -1,6 +1,3 @@
-I'll fix the script by addressing the key issues and optimizing it. Here's the corrected version with explanations:
-
-```bash
 #!/bin/bash
 
 # ==========================
@@ -113,4 +110,3 @@ echo -e " - real_ips.txt        : $(wc -l < "$output_dir/real_ips.txt") potentia
 echo -e " - reverse_lookup.txt  : reverse DNS results"
 
 exit 0
-```
