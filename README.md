@@ -35,6 +35,7 @@ sudo apt install curl dig
 ## ⚡ Usage
 
 ```bash
+git clone https://github.com/0xR4bbit/bypasser.git
 chmod +x bypasser.sh
 ./bypasser.sh target.com
 ```
