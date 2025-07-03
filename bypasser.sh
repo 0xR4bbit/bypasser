@@ -46,31 +46,44 @@ httpx -l subs.txt -ip -title -web-server -tech-detect -status-code -silent > htt
 
 # Step 4: MX Records
 echo -e "${CYAN}[*] Checking MX records (possible IP leak)...${NC}"
-dig MX "$target" +short | tee mx_records.txt | awk '{print $2}' | while read mx; do
-    ip=$(dig A "$mx" +short | head -n 1)
-    if [[ -n "$ip" ]]; then
-        echo "$mx -> $ip" | tee -a mx_records.txt
-    else
-        echo "$mx -> No IP found" | tee -a mx_records.txt
-    fi
-done
+
+# Clear previous output
+> mx_records.txt
+
+mx_hosts=$(dig MX "$target" +short | awk '{print $2}' | sed 's/\.$//')
+
+if [[ -z "$mx_hosts" ]]; then
+    echo "No MX records found for $target" | tee -a mx_records.txt
+else
+    echo "$mx_hosts" | while read mx; do
+        ip=$(dig +short "$mx" | head -n 1)
+        if [[ -n "$ip" ]]; then
+            echo "$mx -> $ip" | tee -a mx_records.txt
+        else
+            echo "$mx -> No IP found" | tee -a mx_records.txt
+        fi
+    done
+fi
+
 
 # Step 5: Zone Transfer attempt
 echo -e "${CYAN}[*] Trying DNS zone transfer (if misconfigured)...${NC}"
+
+# Clear previous output
 > axfr_results.txt
 
-for ns in $(dig NS "$target" +short); do
-    echo "[?] Trying AXFR on $ns" | tee -a axfr_results.txt
-    axfr=$(dig AXFR "$target" @"$ns" +timeout=5 +tries=1)
-    
-    if echo "$axfr" | grep -q "Transfer failed" || echo "$axfr" | grep -q "communications error" || echo "$axfr" | grep -q "no servers could be reached"; then
-        echo "[!] Zone transfer failed for $ns" >> axfr_results.txt
-    else
-        echo "$axfr" >> axfr_results.txt
-    fi
+# Get authoritative name servers
+ns_servers=$(dig NS "$target" +short)
 
-    echo -e "\n---\n" >> axfr_results.txt
-done
+if [[ -z "$ns_servers" ]]; then
+    echo "No name servers found for $target" | tee -a axfr_results.txt
+else
+    for ns in $ns_servers; do
+        echo -e "${YELLOW}[?] Trying AXFR on $ns${NC}" | tee -a axfr_results.txt
+        dig axfr "$target" @"$ns" >> axfr_results.txt 2>&1
+        echo -e "\n---\n" >> axfr_results.txt
+    done
+fi
 
 
 # Step 6: crt.sh passive enum
