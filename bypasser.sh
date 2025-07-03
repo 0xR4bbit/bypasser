@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ======================================================
-# 🔍 Bypasser v2.1 - CloudFlare & CDN Bypass Toolkit
+# 🔍 Bypasser v2.2 - CloudFlare & CDN Bypass Toolkit
 # Author: 0xAbhi (Enhanced by AI Assistant)
 # ======================================================
 
@@ -23,8 +23,8 @@ cat << "EOF"
 ██████╔╝   ██║   ██║     ██║  ██║███████║███████║███████╗██║  ██║
 ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
 EOF
-echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit by 0xR4bbit${NC}"
-echo -e "${MAGENTA}                  
+echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit by 0XR4bbit${NC}"
+echo -e "${MAGENTA}                 
 
 # Check if running as root
 if [[ $EUID -eq 0 ]]; then
@@ -142,8 +142,9 @@ else
     parallel -a "$output_dir/axfr_commands.txt" --colsep ' ' -j 4 \
         "echo -e '\\n[#] Trying {}'; {}" >> "$output_dir/axfr_results.txt" 2>&1
     
+    # FIXED: Escaped parentheses in this message
     if grep -q "Transfer failed" "$output_dir/axfr_results.txt"; then
-        echo -e "  ${YELLOW}[!] Zone transfer blocked (normal for secured DNS)${NC}"
+        echo -e "  ${YELLOW}[!] Zone transfer blocked \(normal for secured DNS\)${NC}"
     else
         axfr_success=$(grep -c "XFR size" "$output_dir/axfr_results.txt")
         if [ "$axfr_success" -gt 0 ]; then
