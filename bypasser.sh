@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # ======================================================
-# 🔍 Bypasser v2.0 - CloudFlare & CDN Bypass Toolkit
-# Author: 0xAbhi 
+# 🔍 Bypasser v2.1 - CloudFlare & CDN Bypass Toolkit
+# Author: 0xAbhi (Enhanced by AI Assistant)
 # ======================================================
 
 RED='\033[0;31m'
@@ -23,7 +23,7 @@ cat << "EOF"
 ██████╔╝   ██║   ██║     ██║  ██║███████║███████║███████╗██║  ██║
 ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
 EOF
-echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit by 0xAbhi${NC}"
+echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit by 0xR4bbit${NC}"
 echo -e "${MAGENTA}                  
 
 # Check if running as root
@@ -34,10 +34,10 @@ fi
 
 # Dependency check
 check_dependency() {
-    if ! command -v $1 &> /dev/null; then
+    if ! command -v "$1" &> /dev/null; then
         echo -e "${RED}[✗] $1 not found. Please install it:${NC}"
         
-        case $1 in
+        case "$1" in
             subfinder) echo "  go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest" ;;
             dnsx)      echo "  go install -v github.com/projectdiscovery/dnsx/cmd/dnsx@latest" ;;
             httpx)     echo "  go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest" ;;
@@ -45,6 +45,7 @@ check_dependency() {
             dig)       echo "  sudo apt install dnsutils" ;;
             curl)      echo "  sudo apt install curl" ;;
             parallel)  echo "  sudo apt install parallel" ;;
+            ipcalc)    echo "  sudo apt install ipcalc" ;;
             *)         echo "  Check your package manager for installation" ;;
         esac
         
@@ -52,7 +53,7 @@ check_dependency() {
     fi
 }
 
-domain=$1
+domain="$1"
 if [[ -z "$domain" ]]; then
     echo -e "${RED}[!] Usage: $0 target.com${NC}"
     exit 1
@@ -65,7 +66,7 @@ if ! [[ "$domain" =~ ^[a-zA-Z0-9][a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
 fi
 
 # Required tools
-tools=("subfinder" "dnsx" "httpx" "dig" "curl" "jq" "parallel")
+tools=("subfinder" "dnsx" "httpx" "dig" "curl" "jq" "parallel" "ipcalc")
 echo -e "${CYAN}[*] Verifying dependencies...${NC}"
 for tool in "${tools[@]}"; do
     check_dependency "$tool"
@@ -142,8 +143,7 @@ else
         "echo -e '\\n[#] Trying {}'; {}" >> "$output_dir/axfr_results.txt" 2>&1
     
     if grep -q "Transfer failed" "$output_dir/axfr_results.txt"; then
-        # FIXED LINE: Use single quotes and escape parentheses
-        echo -e "  ${YELLOW}[!] Zone transfer blocked \(normal for secured DNS\)${NC}"
+        echo -e "  ${YELLOW}[!] Zone transfer blocked (normal for secured DNS)${NC}"
     else
         axfr_success=$(grep -c "XFR size" "$output_dir/axfr_results.txt")
         if [ "$axfr_success" -gt 0 ]; then
@@ -200,7 +200,7 @@ echo -e "  ${GREEN}[+]${NC} Potential real IPs: ${GREEN}$real_count${NC}"
 
 # Step 9: Reverse IP Lookup (Multi-source)
 reverse_lookup() {
-    ip=$1
+    ip="$1"
     echo -e "\n[>] Reverse lookup for $ip"
     
     # Hackertarget API
@@ -210,11 +210,11 @@ reverse_lookup() {
     # ViewDNS API (limited free tier)
     echo -e "\n\n=== ViewDNS ==="
     curl -s "https://api.viewdns.info/reverseip/?host=$ip&apikey=freeapi&output=json" | \
-      jq -r '.response.domains[]?'
+      jq -r '.response.domains[]?' 2>/dev/null
     
     # Local DNS lookup
     echo -e "\n\n=== Local DNS ==="
-    host "$ip" | awk '/pointer/ {print $NF}'
+    host "$ip" | awk '/pointer/ {print $NF}' 2>/dev/null
     
     echo -e "\n---"
 }
@@ -257,4 +257,3 @@ echo -e "  - Execution Log:      $output_dir/execution.log"
 
 echo -e "\n${GREEN}[✓] Scan completed successfully!${NC}"
 exit 0
-
