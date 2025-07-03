@@ -128,28 +128,22 @@ dig ns "$domain" +short | tee -a "$output_dir/dns_records.txt"
 # Step 5: Zone Transfer attempt (IPv4 only with TCP)
 echo -e "\n${CYAN}[*] Trying DNS zone transfer...${NC}"
 > "$output_dir/axfr_results.txt"
+
 nameservers=($(dig ns "$domain" +short))
 if [ ${#nameservers[@]} -eq 0 ]; then
     echo -e "  ${RED}[✗] No nameservers found for $domain${NC}"
 else
-    echo "dig +tcp axfr \"$domain\" @{}" > "$output_dir/axfr_commands.txt"
     for ns in "${nameservers[@]}"; do
-        echo "$ns" >> "$output_dir/axfr_commands.txt"
+        echo -e "${YELLOW}[>] Trying AXFR on $ns${NC}" | tee -a "$output_dir/axfr_results.txt"
+        dig +tcp axfr "$domain" @"$ns" >> "$output_dir/axfr_results.txt" 2>&1
+        echo -e "\n---\n" >> "$output_dir/axfr_results.txt"
     done
-    
-    parallel -a "$output_dir/axfr_commands.txt" --colsep ' ' -j 4 \
-        "echo -e '\\n[#] Trying {}'; {}" >> "$output_dir/axfr_results.txt" 2>&1
-    
-    # FIXED: Escaped parentheses in this message
-    if grep -q "Transfer failed" "$output_dir/axfr_results.txt"; then
-        echo -e "  ${YELLOW}[!] Zone transfer blocked \(normal for secured DNS\)${NC}"
+
+    # Check if AXFR succeeded
+    if grep -q "Transfer failed" "$output_dir/axfr_results.txt" || ! grep -q "IN" "$output_dir/axfr_results.txt"; then
+        echo -e "  ${YELLOW}[!] No successful zone transfers${NC}"
     else
-        axfr_success=$(grep -c "XFR size" "$output_dir/axfr_results.txt")
-        if [ "$axfr_success" -gt 0 ]; then
-            echo -e "  ${GREEN}[!] SUCCESS: Zone transfer possible on ${axfr_success} nameservers${NC}"
-        else
-            echo -e "  ${YELLOW}[!] No successful zone transfers${NC}"
-        fi
+        echo -e "  ${GREEN}[✓] SUCCESS: Zone transfer completed!${NC}"
     fi
 fi
 
