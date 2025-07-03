@@ -2,7 +2,7 @@
 
 # ======================================================
 # 🔍 Bypasser v2.2 - CloudFlare & CDN Bypass Toolkit
-# Author: 0xAbhi (Enhanced by AI Assistant)
+# Author: 0xR4bbit/Abhi
 # ======================================================
 
 RED='\033[0;31m'
@@ -10,7 +10,6 @@ GREEN='\033[0;32m'
 CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
 BLUE='\033[1;34m'
-MAGENTA='\033[1;35m'
 NC='\033[0m'
 
 # Banner
@@ -23,7 +22,7 @@ cat << "EOF"
 ██████╔╝   ██║   ██║     ██║  ██║███████║███████║███████╗██║  ██║
 ╚═════╝    ╚═╝   ╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝
 EOF
-echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit by 0XR4bbit${NC}"
+echo -e "${BLUE}             ⚡ Real IP Discovery & CDN Bypass Toolkit by 0xR4bbit${NC}"
 
 # Check if running as root
 if [[ $EUID -eq 0 ]]; then
