@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ======================================================
-# 🔍 Bypasser v2.2 - CloudFlare & CDN Bypass Toolkit
+# 🔍 Bypasser v2.3 - CloudFlare & CDN Bypass Toolkit
 # Author: 0xR4bbit/Abhi
 # ======================================================
 
