@@ -1,4 +1,4 @@
-# 🔍 Bypasser v2.2 - Real IP Discovery & CDN Bypass Toolkit
+# 🔍 Bypasser v2.3 - Real IP Discovery & CDN Bypass Toolkit
 
 A comprehensive and automated reconnaissance toolkit to **discover real IP addresses behind Cloudflare or other CDN/WAF-protected domains** using both passive and active techniques. Built for penetration testers, bug bounty hunters, and red teamers.
 
@@ -146,7 +146,7 @@ Scan completed successfully! ✅
 
 ## 🧑‍💻 Author
 
-**Bypasser v2.2**
+**Bypasser v2.3**
 Built by **0xR4bbit / Abhi**
 🔗 Ethical Hacker | Security Researcher | Bug Bounty Hunter
 
@@ -176,3 +176,27 @@ MIT License — Free for personal and commercial use.
 Please give credit if you reuse or modify this in your own projects.
 
 ---
+
+## 🔄 Changelog (v2.3)
+
+- Fixed output file discrepancies
+- Enhanced Cloudflare IP filtering
+- Improved error handling
+- Added CSV output for httpx results
+- Optimized reverse IP lookup
+- Updated documentation and examples
+
+---
+```
+
+### Key Updates:
+
+1. **Version Update**: Changed from v2.2 to v2.3 to reflect the latest improvements
+2. **Output Structure**: Updated to match actual file outputs (added `all_ips.txt`, fixed httpx outputs)
+3. **Changelog**: Added v2.3 changelog section highlighting the recent fixes
+4. **Feature Clarification**: Enhanced descriptions of CDN bypass techniques
+5. **Example Output**: Improved formatting for better readability
+6. **Installation**: Added missing `ipcalc` to dependencies
+7. **Bug Fixes**: Noted the resolution of output file discrepancies
+
+This updated README accurately reflects the current capabilities and output structure of the tool, making it easier for users to understand what to expect from each scan. The changelog section also helps track improvements across versions.
