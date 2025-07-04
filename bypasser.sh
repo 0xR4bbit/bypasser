@@ -15,7 +15,7 @@ NC='\033[0m'
 # Banner
 echo -e "${CYAN}"
 cat << "EOF"
-██████╗ ██╗   ██╗██████╗  █████╗ ███████╗███████╗███████╗██████╗
+██████╗ ██╗   ██╗██████╗  █████╗ ███████╗███████╗███████╗██████╗ 
 ██╔══██╗╚██╗ ██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝██╔════╝██╔══██╗
 ██████╔╝ ╚████╔╝ ██████╔╝███████║███████╗███████╗█████╗  ██████╔╝
 ██╔══██╗  ╚██╔╝  ██╔═══╝ ██╔══██║╚════██║╚════██║██╔══╝  ██╔══██╗
@@ -101,10 +101,10 @@ dnsx -l "$output_dir/subs_raw.txt" -a -resp -silent -o "$output_dir/resolved.txt
 resolved_count=$(grep -c . "$output_dir/resolved.txt" 2>/dev/null || echo 0)
 echo -e "  ${GREEN}[+]${NC} Resolved ${GREEN}$resolved_count${NC} subdomains"
 
-# Step 3: HTTP probing
+# Step 3: HTTP probing (compatible with all httpx versions)
 echo -e "${CYAN}[*] Scanning subdomains with httpx...${NC}"
 httpx -l "$output_dir/subs_raw.txt" -ip -title -web-server -tech-detect -status-code -silent \
-  -o "$output_dir/httpx_results.txt" -csv -csv-output "$output_dir/httpx_results.csv"
+  -o "$output_dir/httpx_results.txt"
 httpx_count=$(grep -c . "$output_dir/httpx_results.txt" 2>/dev/null || echo 0)
 echo -e "  ${GREEN}[+]${NC} Found ${GREEN}$httpx_count${NC} live hosts"
 
@@ -218,9 +218,9 @@ echo -e "  - AXFR Results:        $output_dir/axfr_results.txt"
 echo -e "  - crt.sh Subdomains:   $output_dir/crt.txt"
 echo -e "  - crt.sh Resolved IPs: $output_dir/crt_resolved.txt"
 echo -e "  - Reverse Lookup:      $output_dir/reverse_lookup.txt"
-echo -e "  - HTTPX Results (TXT): $output_dir/httpx_results.txt"
-echo -e "  - HTTPX Results (CSV): $output_dir/httpx_results.csv"
+echo -e "  - HTTPX Results:       $output_dir/httpx_results.txt"
 echo -e "  - Execution Log:       $output_dir/execution.log"
 
 echo -e "\n${GREEN}[✓] Scan completed successfully!${NC}"
 exit 0
+
