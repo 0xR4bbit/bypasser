@@ -218,6 +218,8 @@ echo -e "  - AXFR Results:        $output_dir/axfr_results.txt"
 echo -e "  - crt.sh Subdomains:   $output_dir/crt.txt"
 echo -e "  - crt.sh Resolved IPs: $output_dir/crt_resolved.txt"
 echo -e "  - Reverse Lookup:      $output_dir/reverse_lookup.txt"
+echo -e "  - HTTPX Results (TXT): $output_dir/httpx_results.txt"
+echo -e "  - HTTPX Results (CSV): $output_dir/httpx_results.csv"
 echo -e "  - Execution Log:       $output_dir/execution.log"
 
 echo -e "\n${GREEN}[✓] Scan completed successfully!${NC}"
