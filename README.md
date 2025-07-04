@@ -45,10 +45,10 @@ chmod +x bypasser.sh
 
 ## 📁 Output Files
 
-- `subs.txt`            → Subdomains (subfinder)
+- `subs_raw.txt`        → Subdomains (subfinder)
 - `resolved.txt`        → Resolved IPs from subdomains
-- `httpx_results.txt`   → HTTP fingerprinting results
-- `mx_records.txt`      → MX record IPs
+- `httpx_results.csv`   → HTTP fingerprinting results
+- `dns_records.txt`     → DNS Records
 - `axfr_results.txt`    → AXFR zone transfer dump
 - `crt.txt`             → crt.sh subdomains
 - `crt_resolved.txt`    → Resolved IPs from crt.sh
